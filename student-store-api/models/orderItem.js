@@ -16,6 +16,8 @@ exports.getById = async (req, res) => {
 
 };
 
+// where do i update order item model?
+
 // create (POST)
 exports.create = async (req, res) => {
   const { orderId, productId, quantity, price } = req.body;

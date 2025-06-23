@@ -21,6 +21,43 @@ exports.getById = async (req, res) => {
   });
   if (!order)
     return res.status(404).json({ error: "Order could not be fetched" });
+
+  res.json(order);
+};
+// calculate order total through items
+exports.calculate = async (req, res) => {
+  const id = Number(req.params.id);
+
+  const items = await prisma.order.findUnique({
+    where: { id },
+    include: { items: true },
+  });
+
+  let total = 0;
+  items.items.forEach(item => {
+    console.log(item);
+    total += item.price * item.quantity;
+    // console.log(total)
+  });
+  items.total = total;
+  console.log(items.total);
+
+  // let total = 0;
+  // const findItemPrice = (price, quantity) => price * quantity;
+  // // Update the order to adjust total to correct total
+
+  // items.forEach((item) => {
+  //   console.log(item);
+  //   // total += findItemPrice(item, item.quantity);
+  //   // console.log("this is one item's total: " + total);
+  // });
+
+  // product.total = total;
+  // res.json(total);
+  // console.log(total);
+  if (!items)
+    return res.status(404).json({ error: "Order item could not be fetched" });
+  res.json(items);
 };
 
 // create (POST)
@@ -30,6 +67,21 @@ exports.create = async (req, res) => {
     data: { customer, total, status },
   });
   res.status(201).json(newOrder);
+};
+
+// add item to order endpoint
+exports.createItem = async (req, res) => {
+  const orderId = Number(req.params.id);
+  const { productId, quantity } = req.body;
+
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+  });
+
+  const addItem = await prisma.orderItem.create({
+    data: { orderId, productId, quantity, price: product.price },
+  });
+  res.status(201).json(addItem);
 };
 
 // update (PUT)
