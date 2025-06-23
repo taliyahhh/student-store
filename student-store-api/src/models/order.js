@@ -3,6 +3,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+
+
 // WEBSITE ROUTES
 
 // read (GET)
@@ -62,11 +64,16 @@ exports.calculate = async (req, res) => {
 
 // create (POST)
 exports.create = async (req, res) => {
-  const { customer, total, status } = req.body;
-  const newOrder = await prisma.order.create({
-    data: { customer, total, status },
-  });
-  res.status(201).json(newOrder);
+
+  try {
+    const { customer, total, status } = req.body;
+    const newOrder = await prisma.order.create({
+      data: { customer, total, status },
+    });
+  res.json(newOrder)
+  } catch (error) {
+    console.log(error.message)
+  }
 };
 
 // add item to order endpoint
@@ -94,6 +101,17 @@ exports.update = async (req, res) => {
   });
   res.json(updatedOrder);
 };
+
+// update item amount?
+// exports.updateItem = async(req, res) => {
+//   const orderId = Number(req.params.id);
+//   const { productId, quantity } = req.body;
+
+//   const product = await prisma.product.findUnique({
+//     where: { id: productId },
+//   });
+//   if(order.)
+// }
 
 // delete (DELETE)
 exports.remove = async (req, res) => {

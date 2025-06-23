@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../../models/order.js");
+const controller = require("../models/order.js");
+
+// import CORS middleware
+app = express();
+const cors = require("cors");
+app.use(cors());
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getById);
