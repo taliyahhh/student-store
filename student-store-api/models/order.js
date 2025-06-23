@@ -7,12 +7,18 @@ const prisma = new PrismaClient();
 
 // read (GET)
 exports.getAll = async (req, res) => {
-  const orders = await prisma.order.findMany();
+  const orders = await prisma.order.findMany({ include: { items: true } });
+  console.log("ORDERS", orders);
   res.json(orders);
 };
+
 exports.getById = async (req, res) => {
   const id = Number(req.params.id);
-  const order = await prisma.order.findUnique({ where: { id } });
+
+  const order = await prisma.order.findUnique({
+    where: { id },
+    include: { items: true }, // fetch items associated with order?
+  });
   if (!order)
     return res.status(404).json({ error: "Order could not be fetched" });
 };
