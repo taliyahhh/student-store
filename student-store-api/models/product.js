@@ -8,12 +8,33 @@ const prisma = new PrismaClient();
 
 // read (GET)
 
-// /products -> get all products
+// /products -> get all products -> milestone 2 (using potential query parmams)
 exports.getAll = async (req, res) => {
-  const products = await prisma.product.findMany();
-  if (!products)
+  const { category, sort } = req.query;
+
+  const filters = {};
+
+  // query can be filtered by /products?category=whateverCategory
+  if (category) {
+    filters.category = category;
+  }
+
+  let sorting;
+  // query can be filtered by sorting based on price or name
+  if (sort === "name" || sort === "price") {
+    sorting = { [sort]: "asc" };
+  }
+
+  try {
+    const products = await prisma.product.findMany({
+      where: filters,
+      orderBy: sorting,
+    });
+    res.json(products);
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: "Failed to fetch products" });
-  res.json(products);
+  }
 };
 // /products/:id -> get one product
 exports.getById = async (req, res) => {
@@ -22,6 +43,8 @@ exports.getById = async (req, res) => {
   if (!product) return res.status(404).json({ error: "Not found!" });
   res.json(product);
 };
+// /products -> accept query parameters
+exports.get = async (req, res) => {};
 
 // create (POST)
 exports.create = async (req, res) => {
