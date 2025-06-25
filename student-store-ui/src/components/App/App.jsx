@@ -80,7 +80,7 @@ function App() {
 
       // make POST request to /orders
       axios
-        .post("http://localhost:3000/orders/", {
+        .post("https://student-store-api-m8op.onrender.com/orders/", {
           customer: userInfo.name,
           total: orderTotal, // use utils total to calculate? or is there a function
           status: "complete",
@@ -93,6 +93,7 @@ function App() {
       // cart.forEach((item) => {
       //   item.removeFromCart();
       // });
+      setCart({});
     } catch (error) {
       setError(console.error("Error handling checkout: ", error));
     }
@@ -101,7 +102,9 @@ function App() {
   useEffect(() => {
     const fetchList = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3000/products");
+        const { data } = await axios.get(
+          "https://student-store-api-m8op.onrender.com/products"
+        );
         console.log(data);
         setProducts(data);
       } catch (err) {

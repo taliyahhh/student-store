@@ -16,7 +16,7 @@ function ProductDetail({ addToCart, removeFromCart, getQuantityOfItemInCart }) {
       setIsFetching(true);
       try {
         const res = await axios.get(
-          `http://localhost:3000/products/${productId}`
+          `https://student-store-api-m8op.onrender.com/${productId}`
         );
         console.log(res.data);
         setProduct(res.data);

@@ -16,7 +16,7 @@ export default function PaymentInfo({
         </span>
       </h3>
       <div className="input-field">
-        <label className="label">Student ID</label>
+        <label className="label">First and Last Name</label>
         <div className="control ">
           <input
             className="input"
