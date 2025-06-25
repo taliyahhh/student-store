@@ -1,7 +1,5 @@
 // node.js -> backend connection with Prisma
-
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../db/db.js");
 
 // read (GET)
 exports.getAll = async (req, res) => {
@@ -13,7 +11,6 @@ exports.getById = async (req, res) => {
   const orderItem = await prisma.orderItem.findUnique({ where: { id } });
   if (!orderItem)
     return res.status(404).json({ error: "Order Item could not be fetched" });
-
 };
 
 // where do i update order item model?
