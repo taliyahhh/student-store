@@ -46,7 +46,6 @@ function App() {
   const handleOnSearchInputChange = (event) => {
     setSearchInputValue(event.target.value);
   };
-
   const handleOnCheckout = async () => {
     //handle success/error responses
     try {
@@ -80,7 +79,7 @@ function App() {
 
       // make POST request to /orders
       axios
-        .post("http://localhost:3000/orders/", {
+        .post("http://localhost:3000/orders", {
           customer: userInfo.name,
           total: orderTotal, // use utils total to calculate? or is there a function
           status: "complete",
